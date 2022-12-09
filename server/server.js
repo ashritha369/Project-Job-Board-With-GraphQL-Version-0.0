@@ -3,9 +3,13 @@ import express from "express";
 import { expressjwt } from "express-jwt";
 import jwt from "jsonwebtoken";
 import { User } from "./db.js";
-import { ApolloServer } from "apollo-server-express";
 const PORT = 9000;
 const JWT_SECRET = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
+////////////////////////
+import { ApolloServer } from "apollo-server-express";
+// readfile is a build in module that came from node js
+import { readFile } from "fs/promises";
+import { resolvers } from "./resolvers.js";
 
 const app = express();
 app.use(
@@ -29,6 +33,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// CREATING BASIC DEFINITIONS FOR APOLLOSERVER
+const typeDefs = await readFile("./schema.graphql", "utf8");
+const apolloServer = new ApolloServer({ typeDefs, resolvers });
+await apolloServer.start();
+apolloServer.applyMiddleware({ app, path: "/graphql" });
+///
 app.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
 });
