@@ -329,3 +329,108 @@ export const resolvers = {
   -The client is always free to decide what they want, they can ask only for title, even if the id is not asked, it will display only title
 
 ![Image](./Imgs/10.png)
+
+# Job Company Association
+
+- Each job is associated with a company
+- server/schema.graphql
+-
+
+```
+type Query {
+  jobs: [Job!]
+}
+
+type Company {
+  id: ID!
+  name: String!
+}
+type Job {
+  id: ID!
+  title: String!
+  company: Company
+  description: String
+}
+```
+
+![Image](./Imgs/11.png)
+
+- company value will be null, because we have not written anything in resolver function.
+- so declaring company field as mandatory ones, `Company!`
+- matching type defintion of schema w.r.t resolver and .json files
+
+## ![Image](./Imgs/12.png)
+
+## ![Image](./Imgs/13.png)
+
+## ![Image](./Imgs/14.png)
+
+Output:
+
+## ![Image](./Imgs/15.png)
+
+- We need to find the specific company for the respective job, and not same company for all jobs
+
+- We have companyId, in jobs.json --> we need to get the company id in the resolver function as shown below
+
+```
+import { Job } from "./db.js";
+
+export const resolvers = {
+  Query: {
+    jobs: () => Job.findAll(),
+  },
+  Job: {
+    company: (job) => {
+      console.log("Resolving company for job:", job);
+      return {
+        id: "fake",
+        name: "Fake Inc.",
+      };
+    },
+  },
+};
+```
+
+- ![Image](./Imgs/16.png)
+
+---
+
+- ![Image](./Imgs/17.png)
+
+---
+
+- ![Image](./Imgs/18.png)
+
+- 'comapanyId' is a foreign key, and there is a "many-to-one" relationship between the "Job" Table and "Company" Table
+- Importing Company table in resolver.js and removing the hardcoded data.
+
+```
+import { Job } from "./db.js";
+import { Company } from "./db.js";
+export const resolvers = {
+  Query: {
+    jobs: () => Job.findAll(),
+  },
+  Job: {
+    company: (job) => {
+      return Company.findById(job.companyId);
+    },
+  },
+};
+
+```
+
+Response :
+![Image](./Imgs/19.png)
+
+- Simplyfying as below:
+
+![Image](./Imgs/20.png)
+
+- Notice that,
+  -Make sure to pay attention to the relationship between the schema and our resolvers.
+- We can write a resolver function for any field we want, and if we do provide a resolver function then that's what the GraphQL framework will call to get the value for that field.
+- In this case for every Job object it will call our "company" resolver.
+- While for all the other fields for which we don't provide a resolver function, like "id", "title", and "description", the GraphQL framework will simply use the values we provided in the previous step of the resolution chain, in this case the values returned by the "jobs" resolver for the Query type.
+- So basically we need to write a resolver function for a field in a custom type like Job only if we need some special logic to find the right value for that field, like in this case where we need to load the Company object from the database based on the "job.companyId".
