@@ -8,6 +8,7 @@
 - In server/server.js it contains most of the server code
 - we can start the server with `npm start`
 - The server uses 'nodemon' , it will automatically start the server whenever we change our code
+- When we start the server using `npm start` it will run on the different port of local host, click on that url and open the graphql server in the chrome.
 
 2. CLIENT
 
@@ -61,3 +62,65 @@
 - This way we can easily click on this URL to open the Apollo Server welcome page, from where we can open the Sandbox. And if run this query we can see that the GraphQL server is working fine! So this is how we can integrate Apollo Server into an Express application. It's similar to running Apollo Server on its own, but there's an extra step required to plug the GraphQL handler as an Express middleware.
 
 ---
+
+# CUSTOM TYPE DEFINITION
+
+- each job object contains
+
+```
+job object={
+              job-id:
+              job-title:
+              description:
+              company:
+            }
+```
+
+- go back to schema.graphql under server folder and write the type definition to write exactly the data.
+- (custom scalar types in graphQL)[https://graphql.org/learn/schema/#scalar-types]
+- ```
+  type Job {
+      id: ID!
+    }
+
+  ```
+
+- '!' exclamation mark indicates that it is mandatory, it cannot be null, here each job must have an id.
+- ```
+  type Query {
+      jobs: [Job!]
+    }
+
+  ```
+
+- 'Job! 'each element in an array cannot be a null element inside an array.
+- Each element in an array of jobs, should be a Job object
+
+- Schema Definition under 'server' >schema.graphql
+
+```
+type Query {
+  jobs: [Job!]
+}
+
+type Job {
+  id: ID!
+  title: String!
+  description: String
+}
+
+```
+
+- server> resolver.js
+
+```
+export const resolvers = {
+  Query: {
+    jobs: () => [],
+  },
+};
+```
+
+- Start the server using `npm start` , the graphql server will be started
+
+![Image](./Imgs/1.png)
