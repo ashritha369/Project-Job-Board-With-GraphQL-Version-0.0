@@ -122,5 +122,191 @@ export const resolvers = {
 ```
 
 - Start the server using `npm start` , the graphql server will be started
+- here the resolver function simply returns an empty array
 
 ![Image](./Imgs/1.png)
+
+# DATABASE RESOLVER
+
+- the data we get from resolver function must match the schema definition
+- server>resolver.js
+
+```
+export const resolvers = {
+  Query: {
+    jobs: () => [
+      {
+        id: "id1",
+        title: "Title 1",
+        description: "Description 1",
+      },
+      {
+        id: "id2",
+        title: "Title 2",
+        description: "Description 2",
+      },
+      {
+        id: "id3",
+        title: "Title 3",
+        description: "Description 3",
+      },
+      {
+        id: "id4",
+        title: "Title 4",
+        description: "Description 4",
+      },
+    ],
+  },
+};
+
+```
+
+- server>schema.graphql
+
+```
+type Query {
+  jobs: [Job!]
+}
+
+type Job {
+  id: ID!
+  title: String!
+  description: String
+}
+```
+
+![Image](./Imgs/2.png)
+
+- Note :
+
+1. In javascript the missing property would be 'undefined'
+2. In graphql the missing property will be 'null'
+
+-
+
+```
+export const resolvers = {
+  Query: {
+    jobs: () => [
+      {
+        id: "id1",
+        title: "Title 1",
+
+      },
+      {
+        id: "id2",
+        title: "Title 2",
+        description: "Description 2",
+      },
+      {
+        id: "id3",
+        title: "Title 3",
+        description: "Description 3",
+      },
+      {
+        id: "id4",
+        title: "Title 4",
+        description: "Description 4",
+      },
+    ],
+  },
+};
+```
+
+![Image](./Imgs/3.png)
+
+- A resolver function can also be asynchronous, in other words it can return a 'promise'. This is useful whenever the data needs to be fetched fom a database or by calling some other API.
+
+- Proving that 'query still works even if resolver is asynchronous'
+
+- server>resolver.js
+
+```
+export const resolvers = {
+  Query: {
+    jobs: async () => [
+      {
+        id: "id1",
+        title: "Title 1",
+        description: "Description 1",
+      },
+      {
+        id: "id2",
+        title: "Title 2",
+        description: "Description 2",
+      },
+      {
+        id: "id3",
+        title: "Title 3",
+        description: "Description 3",
+      },
+      {
+        id: "id4",
+        title: "Title 4",
+        description: "Description 4",
+      },
+    ],
+  },
+};
+```
+
+![Image](./Imgs/4.png)
+
+- Now removing all the hard-coded data and using some data from 'server/db.js'
+- server/db.js contains data from `server/data/companies.json` , `server/data/jobs.json`, `server/data/users.json`.
+
+- Installing npm package 'fakebase' (https://www.npmjs.com/package/fakebase)[https://www.npmjs.com/package/fakebase]
+- A "fake" database for Node.js that stores data in local JSON files, for testing and sample applications.
+- `npm install fakebase`
+- Usage:
+
+[Image](./Imgs//5.png)
+
+- All operations like `.create()` , `.findAll()`, `.findById()`, `.update()`, `.delete()`, `.findOne()`, are asynchronous.
+- Since they are asynchronous, they returns back the promise.
+
+- server/resolver.js
+
+```
+import { Job } from "./db.js";
+
+export const resolvers = {
+  Query: {
+    jobs: () => Job.findAll(),
+  },
+};
+```
+
+- In db.js we have './data'
+- In data we have jobs.json
+
+- server/data/jobs.json
+- jobs.json
+
+```
+[
+  {
+    "id": "soP9m8MdKeQX_ZXZOCSaL",
+    "companyId": "pVbRRBQtMVw6lUAkj1k43",
+    "title": "Frontend Developer",
+    "description": "We are looking for a Frontend Developer familiar with React."
+  },
+  {
+    "id": "GR7vTA_btqTnLtXcEDX8C",
+    "companyId": "pVbRRBQtMVw6lUAkj1k43",
+    "title": "Backend Developer",
+    "description": "We are looking for a Backend Developer familiar with Node.js and Express."
+  },
+  {
+    "id": "yX71WsWqBRAFuMAIDj4W0",
+    "companyId": "wvdB54Gqbdp_NZTXK9Tue",
+    "title": "Full-Stack Developer",
+    "description": "We are looking for a Full-Stack Developer familiar with Node.js, Express, and React."
+  }
+]
+```
+
+- Therefore when you run the graphql query we get as below:
+  ![Image](./Imgs//6.png)
+- So we got an array of three objects.
+- Notice that if we see the schema type definition, we have no property like 'companyId' in graphql response data, so the graphQl simply ignores that.It's okay to erite extra properties in local .json files
