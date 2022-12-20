@@ -310,3 +310,22 @@ export const resolvers = {
   ![Image](./Imgs//6.png)
 - So we got an array of three objects.
 - Notice that if we see the schema type definition, we have no property like 'companyId' in graphql response data, so the graphQl simply ignores that.It's okay to erite extra properties in local .json files
+- Now resolver function for the jobs query returns the data from our database.
+
+# Field Selection
+
+- More about the query language:
+- we have a job type that contains a multiple fields
+
+![Image](./Imgs//7.png)
+
+- One of the main features of GraphQL is that we can decide which fields we want from the server, for example if we are not interested in 'description' we can remove it.
+
+![Image](./Imgs/8.png)
+
+![Image](./Imgs//9.png)
+
+- GraphQl helps us to prevent fetching more data than we need, it prevents overfetching.
+  -The client is always free to decide what they want, they can ask only for title, even if the id is not asked, it will display only title
+
+![Image](./Imgs/10.png)
