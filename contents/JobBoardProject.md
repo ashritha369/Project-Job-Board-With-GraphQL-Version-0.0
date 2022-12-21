@@ -697,3 +697,101 @@ console.log("data", data);
 
 - ![image](./Imgs/27.png)
 - ![image](./Imgs/28.png)
+
+# React data fetching
+
+- to display the job data on the page in react with the fetched data
+- destructuring in query.js as ` const { jobs } = await request(GRAPHQL_URL, query);`
+- fetching the data from the server is asynchronous, so the real data won't be available immediately , initially it will be [], later once the response is available it will be with values, this change will be observed by `useState` hook of react, when the state changes, the rendering occurs.
+
+- client/JobBoard.js
+
+```
+import JobList from "./JobList";
+import { getJobs } from "../graphql/queries";
+import { useState } from "react";
+
+function JobBoard() {
+  const [jobs, setJobs] = useState([]);
+  console.log("[JobBoard] jobs:", jobs);
+  return (
+    <div>
+      <h1 className="title">Job Board</h1>
+      <JobList jobs={jobs} />
+    </div>
+  );
+}
+
+export default JobBoard;
+```
+
+- O/p in the console will be [], because that is the initial value we passed in to 'useState':
+
+```
+[JobBoard] jobs: []
+```
+
+- Next step is to call the server,but we need to do this only once, after this component has been "mounted" , which means the first time it displayed on the page. We can do this by using react hook called `useEffect`.
+
+- `useEffect` accepts a function as first argument, where we can write our own logic, now by default useeffect is called everytime this component is rendered. But we want this function to run only once, so we can pass the empty array as the second argument.
+
+- but the second parameter accepted by "useEffect" is a list of "dependencies", that means other variables our function depends on. Our function will only be executed again if any of the values in the dependency list changes. So by passing an empty array as dependencies we ensure that our function will never be re-executed. It will only run once, the first time the component is rendered, or, in other words, when this component is mounted. With this log statement we can see exactly when this function is called.
+- Let's reload the whole application. And you can see our "mounted" message in the console, proving that our effect function was called. Now that we've seen how "useEffect" works, we can actually call our "getJobs" function here.
+- And remember that "getJobs" returns a Promise. Now, usually I use "await" to unpack a Promise, but unfortunately we cannot declare this function as "async", because the function we pass to useEffect cannot return anything, but an "async" function always returns a Promise. So instead I'm going to call "then" on the Promise, And here we can pass a function that will receive the result, that is the "jobs" data.
+- At this point we want to call "setJobs" to update the value of our state variable. Ok. Let's see how this works. You can see that the page is now displaying the jobs coming from the server. But let's see what happens in terms of the component lifecycle. We can tell from the logs that our component was first rendered with an empty array of "jobs". Again that's the initial state we passed to "useState". Then our effect function was called, and that's when it printed the "mounted" message.
+- That's also when we sent the request to the GraphQL server, and when we received the response we updated the value of the "jobs" variable, resulting in the component to be rendered again, this time with an array of 3 jobs.
+- I'm going through each step because it's the first time we use "useState" and "useEffect", and not all of you may be familiar with them, but this is pretty much all you need to know about React hooks for the next few sections. Ok. At this point we can remove this log message.
+- And we could also simplify this code a little bit. Since we're simply passing the "jobs" argument straight to "setJobs", we might as well pass the "setJobs" function directly to the "then" method. That's exactly the same thing. Let's quickly check that everything still works. Again, we can see the right data displayed on the page. Ok. So this is how we can fetch and display the data from the server in a React component.
+
+- Client/JobBoard.js
+
+```
+import JobList from "./JobList";
+import { getJobs } from "../graphql/queries";
+import { useEffect, useState } from "react";
+
+function JobBoard() {
+  const [jobs, setJobs] = useState([]);
+  useEffect(() => {
+    console.log("mounted");
+    getJobs().then((jobs) => setJobs(jobs));
+  }, []);
+  console.log("[JobBoard] jobs:", jobs);
+  return (
+    <div>
+      <h1 className="title">Job Board</h1>
+      <JobList jobs={jobs} />
+    </div>
+  );
+}
+
+export default JobBoard;
+```
+
+![image](./Imgs//29.png)
+
+- Simpliying we get :
+- Client/JobBoard.js
+
+```
+import JobList from "./JobList";
+import { getJobs } from "../graphql/queries";
+import { useEffect, useState } from "react";
+
+function JobBoard() {
+  const [jobs, setJobs] = useState([]);
+  useEffect(() => {
+    getJobs().then(setJobs);
+  }, []);
+  console.log("[JobBoard] jobs:", jobs);
+  return (
+    <div>
+      <h1 className="title">Job Board</h1>
+      <JobList jobs={jobs} />
+    </div>
+  );
+}
+
+export default JobBoard;
+
+```
