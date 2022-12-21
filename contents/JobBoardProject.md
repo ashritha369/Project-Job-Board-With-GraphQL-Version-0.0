@@ -439,7 +439,7 @@ Response :
 
 ## Better understanding with console.log and terminal outputs:
 
-- server/resolver.js
+- **server/resolver.js**
 
 ```
 import { Job } from "./db.js";
@@ -474,7 +474,7 @@ export const resolvers = {
 
 ```
 
-- Terminal Output:
+- **Terminal Output**:
 
 ```
 Server running on port 9000
@@ -549,3 +549,151 @@ COMPANY RESULT WITH FIND BY ID  IS : {
 ---
 
 ![Image](./Imgs/22.png)
+
+---
+
+# GraphQL- Request Client
+
+- Now we can update client folder to fetch the data from the graphql server.
+
+- created graphql folder under client folder with query.js file
+
+- we will make all the request with fetch
+
+- Here we are using a library npm package called `graphql-request` - Minimal GraphQL client supporting Node and browsers for scripts or simple apps-
+  [https://www.npmjs.com/package/graphql-request](https://www.npmjs.com/package/graphql-request)
+
+- We will install it under client forder after starting the serverfor react with 'npm start ' with `npm add graphql-request graphql`
+
+- ![Image](./Imgs/23.png)
+- ![Image](./Imgs/24.png)
+- ![Image](./Imgs/25.png)
+
+- Server is rendered with URL `http://localhost:9000/graphql` , use this in client side with fetch option
+
+- 'gql' is used to tag as a graphql code, so that the editor will aplly the right syntax highlighting.
+
+- ![Image](./Imgs/26.png)
+- we need to get the fields like job title, company name, job id from the server
+
+- In the OPERATIONS of graphql server shown below:
+
+```
+query Query {
+  jobs {
+    title
+    description
+    id
+    company {
+      id
+      name
+    }
+  }
+}
+```
+
+- In the above one we will remove id under company so that it will become as below:
+
+```
+query Query {
+  jobs {
+    title
+    description
+    id
+    company {
+      name
+    }
+  }
+}
+```
+
+- so the RESPONSE we get is as shown below:
+
+```
+{
+  "data": {
+    "jobs": [
+      {
+        "title": "Frontend Developer",
+        "description": "We are looking for a Frontend Developer familiar with React.",
+        "id": "soP9m8MdKeQX_ZXZOCSaL",
+        "company": {
+          "name": "Facegle"
+        }
+      },
+      {
+        "title": "Backend Developer",
+        "description": "We are looking for a Backend Developer familiar with Node.js and Express.",
+        "id": "GR7vTA_btqTnLtXcEDX8C",
+        "company": {
+          "name": "Facegle"
+        }
+      },
+      {
+        "title": "Full-Stack Developer",
+        "description": "We are looking for a Full-Stack Developer familiar with Node.js, Express, and React.",
+        "id": "yX71WsWqBRAFuMAIDj4W0",
+        "company": {
+          "name": "Goobook"
+        }
+      }
+    ]
+  }
+}
+```
+
+- so copying the operation and pasting in between gql ` `
+
+- so the client/src/graphql/queries.js becomes as below:
+
+```
+import { request, gql } from "graphql-request";
+
+const GRAPHQL_URL = "http://localhost:9000/graphql";
+
+function getJobs() {
+  const query = gql`
+    query {
+      jobs {
+        title
+        description
+        id
+        company {
+          name
+        }
+      }
+    }
+  `;
+}
+```
+
+- Now we want to send this query to A server using request function `request(GRAPHQL_URL, query);`
+- request function returns promise as it is asynchronous so we need to await it.
+- so the client/src/graphql/queries.js becomes as below:
+
+```
+import { request, gql } from "graphql-request";
+
+const GRAPHQL_URL = "http://localhost:9000/graphql";
+
+export async function getJobs() {
+  const query = gql`
+    query {
+      jobs {
+        title
+        description
+        id
+        company {
+          name
+        }
+      }
+    }
+  `;
+
+const data = await request(GRAPHQL_URL, query);
+console.log("data", data);
+}
+```
+
+- ![image](./Imgs/27.png)
+- ![image](./Imgs/28.png)
