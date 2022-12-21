@@ -434,3 +434,118 @@ Response :
 - In this case for every Job object it will call our "company" resolver.
 - While for all the other fields for which we don't provide a resolver function, like "id", "title", and "description", the GraphQL framework will simply use the values we provided in the previous step of the resolution chain, in this case the values returned by the "jobs" resolver for the Query type.
 - So basically we need to write a resolver function for a field in a custom type like Job only if we need some special logic to find the right value for that field, like in this case where we need to load the Company object from the database based on the "job.companyId".
+
+---
+
+## Better understanding with console.log and terminal outputs:
+
+- server/resolver.js
+
+```
+import { Job } from "./db.js";
+import { Company } from "./db.js";
+export const resolvers = {
+  Query: {
+    jobs: () => {
+      console.log(
+        "JOB FROM TABLE IS ",
+        Job.findAll().then((res) =>
+          console.log("RESULT IS ANY ARRAY OF OBJECTS: ", res)
+        )
+      );
+      return Job.findAll();
+    },
+  },
+
+  Job: {
+    company: (job) => {
+      console.log("JOB IS:", job);
+
+      console.log(
+        "COMPANY IS",
+        Company.findById(job.companyId).then((res) =>
+          console.log("COMPANY RESULT WITH FIND BY ID  IS :", res)
+        )
+      );
+      return Company.findById(job.companyId);
+    },
+  },
+};
+
+```
+
+- Terminal Output:
+
+```
+Server running on port 9000
+GraphQL endpoint: http://localhost:9000/graphql
+JOB FROM TABLE IS  Promise { <pending> }
+
+RESULT IS ANY ARRAY OF OBJECTS:  [
+  {
+    id: 'soP9m8MdKeQX_ZXZOCSaL',
+    companyId: 'pVbRRBQtMVw6lUAkj1k43',
+    title: 'Frontend Developer',
+    description: 'We are looking for a Frontend Developer familiar with React.'
+  },
+  {
+    id: 'GR7vTA_btqTnLtXcEDX8C',
+    companyId: 'pVbRRBQtMVw6lUAkj1k43',
+    title: 'Backend Developer',
+    description: 'We are looking for a Backend Developer familiar with Node.js and Express.'
+  },
+  {
+    id: 'yX71WsWqBRAFuMAIDj4W0',
+    companyId: 'wvdB54Gqbdp_NZTXK9Tue',
+    title: 'Full-Stack Developer',
+    description: 'We are looking for a Full-Stack Developer familiar with Node.js, Express, and React.'
+  }
+]
+
+JOB IS: {
+  id: 'soP9m8MdKeQX_ZXZOCSaL',
+  companyId: 'pVbRRBQtMVw6lUAkj1k43',
+  title: 'Frontend Developer',
+  description: 'We are looking for a Frontend Developer familiar with React.'
+}
+COMPANY IS Promise { <pending> }
+
+JOB IS: {
+  id: 'GR7vTA_btqTnLtXcEDX8C',
+  companyId: 'pVbRRBQtMVw6lUAkj1k43',
+  title: 'Backend Developer',
+  description: 'We are looking for a Backend Developer familiar with Node.js and Express.'
+}
+COMPANY IS Promise { <pending> }
+
+JOB IS: {
+  id: 'yX71WsWqBRAFuMAIDj4W0',
+  companyId: 'wvdB54Gqbdp_NZTXK9Tue',
+  title: 'Full-Stack Developer',
+  description: 'We are looking for a Full-Stack Developer familiar with Node.js, Express, and React.'
+}
+COMPANY IS Promise { <pending> }
+
+COMPANY RESULT WITH FIND BY ID  IS : {
+  id: 'pVbRRBQtMVw6lUAkj1k43',
+  name: 'Facegle',
+  description: 'We are a startup on a mission to disrupt social search engines. Think Facebook meet Google.'
+}
+COMPANY RESULT WITH FIND BY ID  IS : {
+  id: 'pVbRRBQtMVw6lUAkj1k43',
+  name: 'Facegle',
+  description: 'We are a startup on a mission to disrupt social search engines. Think Facebook meet Google.'
+}
+COMPANY RESULT WITH FIND BY ID  IS : {
+  id: 'wvdB54Gqbdp_NZTXK9Tue',
+  name: 'Goobook',
+  description: 'We are a startup on a mission to disrupt search social media. Think Google meet Facebook.'
+}
+
+```
+
+![Image](./Imgs/21.png)
+
+---
+
+![Image](./Imgs/22.png)
