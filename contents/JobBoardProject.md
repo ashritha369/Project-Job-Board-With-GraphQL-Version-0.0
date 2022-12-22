@@ -1006,3 +1006,21 @@ function JobDetail() {
 
 export default JobDetail;
 ```
+
+# Exercise: Company Query
+
+![Image](./Imgs/46.png)
+![Image](./Imgs/47.png)
+![Image](./Imgs/48.png)
+
+- We need to fetch the company data:
+
+1. Implementing the server code:
+
+- Update the graphql schema in server/schema.graphql and resolver.js code:
+  ![Image](./Imgs/49.png)
+  ![Image](./Imgs/50.png)
+  ![Image](./Imgs/51.png)
+  ![Image](./Imgs/52.png)
+  ![Image](./Imgs/53.png)
+  ![Image](./Imgs/54.png)
