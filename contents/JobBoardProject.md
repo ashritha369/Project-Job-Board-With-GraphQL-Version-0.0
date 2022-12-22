@@ -795,3 +795,75 @@ function JobBoard() {
 export default JobBoard;
 
 ```
+
+# Query Arguments
+
+- We want to get a specific job in 'Job Details' component, upon clicking the particular job in 'Job Board' Component.
+
+- type definition to return a single/particular job by it's id is:
+  ` job(id: ID!): Job`
+
+1. server: graphql
+
+```
+type Query {
+  job(id: ID!): Job
+  jobs: [Job!]
+}
+
+type Company {
+  id: ID!
+  name: String!
+}
+type Job {
+  id: ID!
+  title: String!
+  company: Company!
+  description: String
+}
+```
+
+2. How to access argument in a resolver function?
+
+- How to access argument in a resolver function?
+- In resolver function , the first argument is always a parent object, here it is called a 'root', second paramenter is called as 'args' contains the arguments sent in the graphQL query.
+
+![Image](./Imgs/30.png)
+
+- server: resolver.js
+
+```
+import { Job } from "./db.js";
+import { Company } from "./db.js";
+
+export const resolvers = {
+  Query: {
+    job: (root, args) => {
+      console.log("args", args);
+    },
+    jobs: () => Job.findAll(),
+  },
+
+  Job: {
+    company: (job) => Company.findById(job.companyId),
+  },
+};
+
+```
+
+- Response:
+
+![Image](./Imgs/31.png)
+
+- But if we look in the server logs, you can see that it printed the value of the "args" parameter, and it's an object containing an "id" property, with the value of the argument we passed in the query. So we'll get the "id" passed to our resolver function in the "args". In fact, we could destructure this parameter, and extract the "id", that's the only possible argument in this case. At this point we have everything we need to return the right job.
+
+![Image](./Imgs/32.png)
+
+- Destructuring to ` job: (root, { id })`
+- to denote unused variables, we use '\_' , so the 'root' variables becomes, '\_root'
+
+- ![Image](./Imgs/33.png)
+
+- Keeping everything in one line, -![Image](./Imgs/34.png)
+- Response:
+- ![Image](./Imgs/35.png)
