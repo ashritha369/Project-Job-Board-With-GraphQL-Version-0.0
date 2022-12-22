@@ -1,4 +1,6 @@
-# Install the dependencies
+# QUERIES
+
+## Install the dependencies
 
 - W.r.t package.json install the dependencies
 - install npm package with `npm install `
@@ -31,9 +33,9 @@
 - Installing npm package using `npm install`
 - Starting react project using `npm start`
 
-# Hardcoded data in client side
+## Hardcoded data in client side
 
-# APOLLO SERVER FOR EXPRESS
+## APOLLO SERVER FOR EXPRESS
 
 - Fetching real data from the server side
 - We will start using apollo server with express in this project
@@ -63,7 +65,7 @@
 
 ---
 
-# CUSTOM TYPE DEFINITION
+## CUSTOM TYPE DEFINITION
 
 - each job object contains
 
@@ -126,7 +128,7 @@ export const resolvers = {
 
 ![Image](./Imgs/1.png)
 
-# DATABASE RESOLVER
+## DATABASE RESOLVER
 
 - the data we get from resolver function must match the schema definition
 - server>resolver.js
@@ -312,7 +314,7 @@ export const resolvers = {
 - Notice that if we see the schema type definition, we have no property like 'companyId' in graphql response data, so the graphQl simply ignores that.It's okay to erite extra properties in local .json files
 - Now resolver function for the jobs query returns the data from our database.
 
-# Field Selection
+## Field Selection
 
 - More about the query language:
 - we have a job type that contains a multiple fields
@@ -330,7 +332,7 @@ export const resolvers = {
 
 ![Image](./Imgs/10.png)
 
-# Job Company Association
+## Job Company Association
 
 - Each job is associated with a company
 - server/schema.graphql
@@ -552,7 +554,7 @@ COMPANY RESULT WITH FIND BY ID  IS : {
 
 ---
 
-# GraphQL- Request Client
+## GraphQL- Request Client
 
 - Now we can update client folder to fetch the data from the graphql server.
 
@@ -796,7 +798,7 @@ export default JobBoard;
 
 ```
 
-# Query Arguments
+## Query Arguments
 
 - We want to get a specific job in 'Job Details' component, upon clicking the particular job in 'Job Board' Component.
 
@@ -868,7 +870,7 @@ export const resolvers = {
 - Response:
 - ![Image](./Imgs/35.png)
 
-# Query Variables
+## Query Variables
 
 - ![Image](./Imgs/36.png)
 - ![Image](./Imgs/37.png)
@@ -1007,7 +1009,7 @@ function JobDetail() {
 export default JobDetail;
 ```
 
-# Exercise: Company Query
+## Exercise: Company Query
 
 ![Image](./Imgs/46.png)
 ![Image](./Imgs/47.png)
@@ -1025,7 +1027,7 @@ export default JobDetail;
   ![Image](./Imgs/53.png)
   ![Image](./Imgs/54.png)
 
-# Company Jobs Association
+## Company Jobs Association
 
 - displaying another data, where it shows all the jobs available under the particular company
   ![Image](./Imgs/55.png)
@@ -1057,9 +1059,9 @@ export default JobDetail;
   ![Image](./Imgs/61.png)
   ![Image](./Imgs/62.png)
 
-# Object Graph Navigation
+## Object Graph Navigation
 
-# Error Handling
+## Error Handling
 
 1. What happens if http request fails?
 
