@@ -1056,3 +1056,14 @@ export default JobDetail;
 - reusing the 'joblist' component
   ![Image](./Imgs/61.png)
   ![Image](./Imgs/62.png)
+
+# Object Graph Navigation
+
+# Error Handling
+
+1. What happens if http request fails?
+
+- that is what happens when the server is down? data coming from the server will be null, which causes the empty UI elements in the client side.
+
+- ![Image](./Imgs/63.png)
+- ![Image](./Imgs/64.png)
