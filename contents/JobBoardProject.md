@@ -823,7 +823,7 @@ type Job {
 }
 ```
 
-2. How to access argument in a resolver function?
+2. How to access argument in a resolver function, How to access specific job for a given id?
 
 - How to access argument in a resolver function?
 - In resolver function , the first argument is always a parent object, here it is called a 'root', second paramenter is called as 'args' contains the arguments sent in the graphQL query.
@@ -867,3 +867,142 @@ export const resolvers = {
 - Keeping everything in one line, -![Image](./Imgs/34.png)
 - Response:
 - ![Image](./Imgs/35.png)
+
+# Query Variables
+
+- ![Image](./Imgs/36.png)
+- ![Image](./Imgs/37.png)
+
+- We cannot paste the 'hardcoded id like that'
+- We will use graphql variables to overcome this:
+- Varible sign must start with a dollar sign
+- ![Image](./Imgs/38.png)
+- ![Image](./Imgs/39.png)
+- ![Image](./Imgs/40.png)
+- ![Image](./Imgs/41.png)
+- We already have the "jobId" value available, it's extracted by calling "useParams" that returns any parameters passed in the route path.
+- ![Image](./Imgs/42.png)
+- ![Image](./Imgs/43.png)
+- It's ESLint telling us that we should pass "jobId" as a dependency. Which is correct, because we are using the "jobId" inside our effect function, so if the "jobId" changes we want the effect function to run again, to fetch the data for the right job.
+- ![Image](./Imgs/44.png)
+- ![Image](./Imgs/45.png)
+
+-FINAL
+-server: resolver.js
+
+```
+import { Job } from "./db.js";
+import { Company } from "./db.js";
+
+export const resolvers = {
+  Query: {
+    job: (_root, { id }) => Job.findById(id),
+    jobs: () => Job.findAll(),
+  },
+
+  Job: {
+    company: (job) => Company.findById(job.companyId),
+  },
+};
+```
+
+- server:schema.graphql
+
+```
+type Query {
+  job(id: ID!): Job
+  jobs: [Job!]
+}
+
+type Company {
+  id: ID!
+  name: String!
+}
+type Job {
+  id: ID!
+  title: String!
+  company: Company!
+  description: String
+}
+```
+
+- Client/query.js
+
+```
+import { request, gql } from "graphql-request";
+
+const GRAPHQL_URL = "http://localhost:9000/graphql";
+
+export async function getJob(id) {
+  const query = gql`
+    query JobQuery($id: ID!) {
+      job(id: $id) {
+        id
+        title
+        company {
+          id
+          name
+        }
+        description
+      }
+    }
+  `;
+  const variables = { id };
+  const { job } = await request(GRAPHQL_URL, query, variables);
+  return job;
+}
+
+export async function getJobs() {
+  const query = gql`
+    query {
+      jobs {
+        title
+        description
+        id
+        company {
+          name
+        }
+      }
+    }
+  `;
+
+  const { jobs } = await request(GRAPHQL_URL, query);
+  return jobs;
+}
+```
+
+client: JobDetail
+
+```
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import { getJob } from "../graphql/queries";
+
+function JobDetail() {
+  const [job, setJob] = useState(null);
+  const { jobId } = useParams();
+
+  useEffect(() => {
+    getJob(jobId).then(setJob);
+  }, [jobId]);
+
+  console.log("[JobDetail] job:", job);
+
+  if (!job) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <div>
+      <h1 className="title">{job.title}</h1>
+      <h2 className="subtitle">
+        <Link to={`/companies/${job.company.id}`}>{job.company.name}</Link>
+      </h2>
+      <div className="box">{job.description}</div>
+    </div>
+  );
+}
+
+export default JobDetail;
+```
