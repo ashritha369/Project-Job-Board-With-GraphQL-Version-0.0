@@ -1024,3 +1024,35 @@ export default JobDetail;
   ![Image](./Imgs/52.png)
   ![Image](./Imgs/53.png)
   ![Image](./Imgs/54.png)
+
+# Company Jobs Association
+
+- displaying another data, where it shows all the jobs available under the particular company
+  ![Image](./Imgs/55.png)
+  ![Image](./Imgs/56.png)
+- need to display the jobs available for the company by resusiing the joblist component:
+- but before that we need to fetch the data from the server:
+- server> schema.graphql
+  ![Image](./Imgs/57.png)
+- server> resolver.js
+  ![Image](./Imgs/58.png)
+- Testing this by making a query using the apollo sandbox:
+  ![Image](./Imgs/59.png)
+- Go to the client :
+
+- client> query.js : copying the below snippet and pasting in query.js
+
+```
+ jobs {
+     id
+     title
+    }
+
+```
+
+![Image](./Imgs/60.png)
+
+- Now we need to update the react component to display the new data:
+- reusing the 'joblist' component
+  ![Image](./Imgs/61.png)
+  ![Image](./Imgs/62.png)
