@@ -76,3 +76,21 @@
 - ![Image](./Imgs/89.png)
 - ![Image](./Imgs/90.png)
 - ![Image](./Imgs/91.png)
+
+## Exercise: deleteJob Mutation
+
+--> Reading the data in graph QL is performed by quries, while creatin, updating, deleting the data is performed by Mutataions.
+
+### deleteJobMutatation:
+
+--> STEPS in SERVER folder's files
+
+1. to define deleteJob Mutation in `schema.graphql` in server code
+2. move on to the `resolver.js` code, use `Job.delete() table` ,this method expects an 'id' that should be deleted and then it returns a promise with thge deleted object.
+3. Use apollo sandbox to test the mutation
+
+- ![Image](./Imgs/92.png)
+- ![Image](./Imgs/93.png)
+- ![Image](./Imgs/94.png)
+- ![Image](./Imgs/95.png)
+- ![Image](./Imgs/96.png)
