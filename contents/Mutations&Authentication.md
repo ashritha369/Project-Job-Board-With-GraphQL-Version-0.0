@@ -34,3 +34,19 @@
   --> If we see the SERVER/DATA/jobs.json, the new job is saved there
   --> ![Image](./Imgs/71.png)
   --> ![Image](./Imgs/72.png)
+
+## Input types
+
+- in graphql schema , we define input types
+  --> ![Image](./Imgs/73.png)
+- Changing in resolver.js in server code
+  --> ![Image](./Imgs/74.png)
+  --> Keeping everything in single line
+  ![Image](./Imgs/75.png)
+- Testing in the apollo sandbox:
+  ![Image](./Imgs/76.png)
+  ![Image](./Imgs/77.png)
+  --> New job data seen in .json file as shown below
+  ![Image](./Imgs/78.png)
+
+- If we want to delete the data, first stop the server, then delete the objects in jobs.json file
