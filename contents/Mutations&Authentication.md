@@ -48,5 +48,6 @@
   ![Image](./Imgs/77.png)
   --> New job data seen in .json file as shown below
   ![Image](./Imgs/78.png)
+  ![Image](./Imgs/79.png)
 
 - If we want to delete the data, first stop the server, then delete the objects in jobs.json file
