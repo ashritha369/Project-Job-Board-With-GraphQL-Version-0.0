@@ -51,3 +51,28 @@
   ![Image](./Imgs/79.png)
 
 - If we want to delete the data, first stop the server, then delete the objects in jobs.json file
+
+## Mutation Request
+
+- working with client code
+- client / query.js
+  --> Note that when sending a graphql request over HTTP, the property is still called query (even though in this case it is really a mutation), when we receive a response, it won't contain a "company object".
+- ![Image](./Imgs/80.png)
+- ![Image](./Imgs/81.png)
+
+---> We can use alias like below, while fetching the data
+
+- ![Image](./Imgs/82.png)
+- ![Image](./Imgs/83.png)
+  ----> Client/components/JobForm.js
+- ![Image](./Imgs/84.png)
+- ![Image](./Imgs/85.png)
+- ![Image](./Imgs/86.png)
+
+---> We can use `useNavigate()` hook provided by React Router, which allows us to navigate to different path, that is to send data to different route path as shown, which allows to display new job details to the user.
+
+- ![Image](./Imgs/87.png)
+- ![Image](./Imgs/88.png)
+- ![Image](./Imgs/89.png)
+- ![Image](./Imgs/90.png)
+- ![Image](./Imgs/91.png)
