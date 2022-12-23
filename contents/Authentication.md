@@ -13,7 +13,7 @@
 - The token identifies the user, and is signed by the server. So when the server receives a request from the client, it can verify that it was sent by a legitimate user.
 - Assuming the token is valid, the server will return whatever data the client asked for. This is a pretty standard authentication flow.
 
-![Image](./Imgs/104.png)
+![Image](./Imgs/img.png)
 
 - Credentials to login
   -->
