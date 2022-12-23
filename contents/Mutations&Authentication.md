@@ -94,3 +94,20 @@
 - ![Image](./Imgs/94.png)
 - ![Image](./Imgs/95.png)
 - ![Image](./Imgs/96.png)
+
+## Exercise: updateJob Mutation
+
+--> STEPS in SERVER folder's files
+
+1. to define updateJob Mutation in `schema.graphql` in server code
+2. move on to the `resolver.js` code, use `Job.update() table` ,this method expects an 'input' object that should be updated and then it returns a promise with the updated object.
+3. Use apollo sandbox to test the mutation
+
+- ![Image](./Imgs/97.png)
+- ![Image](./Imgs/98.png)
+- ![Image](./Imgs/99.png)
+- ![Image](./Imgs/100.png)
+  --> replacing this operation with mutatio
+- ![Image](./Imgs/101.png)
+- ![Image](./Imgs/102.png)
+- ![Image](./Imgs/103.png)
