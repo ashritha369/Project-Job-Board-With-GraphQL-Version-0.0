@@ -35,7 +35,14 @@ app.post("/login", async (req, res) => {
 
 // CREATING BASIC DEFINITIONS FOR APOLLOSERVER
 const typeDefs = await readFile("./schema.graphql", "utf8");
-const context = ({ req }) => ({ auth: req.auth });
+const context = async ({ req }) => {
+  // LOGIC ADDED
+  if (req.auth) {
+    const user = await User.findById(req.auth.sub);
+    return { user };
+  }
+  return {};
+};
 const apolloServer = new ApolloServer({ typeDefs, resolvers, context });
 await apolloServer.start();
 apolloServer.applyMiddleware({ app, path: "/graphql" });

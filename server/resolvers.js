@@ -9,11 +9,13 @@ export const resolvers = {
   },
 
   Mutation: {
-    createJob: (_root, { input }, { auth }) => {
-      if (!auth) {
+    createJob: (_root, { input }, { user }) => {
+      console.log("[createJob] user:", user);
+      if (!user) {
         throw new Error("Unauthorized");
       }
-      return Job.create(input);
+
+      return Job.create({ ...input, companyId: user.companyId });
     },
     deleteJob: (_root, { id }) => Job.delete(id),
     updateJob: (_root, { input }) => Job.update(input),

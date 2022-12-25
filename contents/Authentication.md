@@ -116,3 +116,34 @@
 - But we are responsible for setting the data passed in the context object. In this example we're setting the "auth" property to be the JSON web token payload, as decoded by the "express-jwt" middleware. But you can use the context to pass any additional information you need, that's not part of the standard GraphQL request.
 - ![Image](./Imgs/img32.png)
 - ![Image](./Imgs/img33.png)
+
+## User-Company Association
+
+We hardcoded company id value as below:
+
+- ![Image](./Imgs/img34.png)
+- ![Image](./Imgs/img35.png)
+- 'sub' is the user-id, iat is the time when the token was created. But it doesn't contains the company id , that is what we want. But with userid we wan look up to the object that is stored in the database. so to do that modifying the server code of server.js
+- ![Image](./Imgs/img36.png)
+- update resolver with changing 'auth' with 'user' everywhere.
+- ![Image](./Imgs/img37.png)
+- ![Image](./Imgs/img38.png)
+- ![Image](./Imgs/img39.png)
+- ![Image](./Imgs/img40.png)
+
+- Which means you are able to create job only if you are authenticated
+- ![Image](./Imgs/img41.png)
+- ![Image](./Imgs/img42.png)
+- ![Image](./Imgs/img43.png)
+- ![Image](./Imgs/img44.png)
+- ![Image](./Imgs/img45.png)
+- loggin in below credentials:
+  {
+  "id": "i0Nn6qvicHP5DTuKTyaq0",
+  "email": "bob@goobook.co",
+  "password": "bob123",
+  "companyId": "wvdB54Gqbdp_NZTXK9Tue"
+  }
+- ![Image](./Imgs/img46.png)
+- ![Image](./Imgs/img47.png)
+- ![Image](./Imgs/img48.png)
