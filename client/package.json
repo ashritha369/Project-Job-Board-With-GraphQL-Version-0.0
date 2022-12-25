@@ -34,5 +34,8 @@
     "extends": [
       "react-app"
     ]
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }

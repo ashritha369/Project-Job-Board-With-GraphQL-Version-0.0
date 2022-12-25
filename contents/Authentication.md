@@ -147,3 +147,17 @@ We hardcoded company id value as below:
 - ![Image](./Imgs/img46.png)
 - ![Image](./Imgs/img47.png)
 - ![Image](./Imgs/img48.png)
+
+## Request Authentication
+
+- ![Image](./Imgs/img49.png)
+- ![Image](./Imgs/img50.png)
+- ![Image](./Imgs/img51.png)
+- Posting a new job
+
+- ![Bug](./Imgs/bug.png)
+
+## UNRESOLVED BUG
+
+- ![Bug](./Imgs/bug.png)
+- unable to post the job because of this bug.
